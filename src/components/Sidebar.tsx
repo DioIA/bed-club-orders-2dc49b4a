@@ -42,7 +42,7 @@ const Sidebar = ({ onClose }: SidebarProps) => {
   return (
     <aside 
       className="w-64 h-full bg-sidebar sidebar-background flex flex-col border-r text-white" 
-      style={{ backgroundColor: '#1B4332' }}
+      style={{ backgroundColor: '#161a1b' }}
     >
       <div className="flex items-center justify-between p-4">
         <Logo />
