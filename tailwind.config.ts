@@ -53,7 +53,7 @@ export default {
           foreground: 'hsl(var(--card-foreground))'
         },
         sidebar: {
-          DEFAULT: '#0e3d27',
+          DEFAULT: '#1B4332',
           foreground: 'hsl(var(--sidebar-foreground))',
           border: '#ffffff1a',
         },

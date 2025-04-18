@@ -100,6 +100,10 @@
   .status-transit {
     @apply bg-[hsl(var(--status-transit))] text-white;
   }
+
+  .sidebar-background {
+    @apply bg-sidebar opacity-90 backdrop-blur-sm;
+  }
 }
 
 /* Animation Keyframes */
