@@ -20,8 +20,8 @@ const Logo = ({ className = "" }: LogoProps) => {
         whileHover={{ scale: 1.05 }}
       />
       <span className="font-heading text-xl font-bold">
-        <span>Casulo</span>
-        <span className="text-gradient">Club</span>
+        <span className="text-gradient">Casulo</span>
+        <span>Club</span>
       </span>
     </motion.div>
   );
