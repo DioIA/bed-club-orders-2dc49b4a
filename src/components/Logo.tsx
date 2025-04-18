@@ -8,7 +8,7 @@ interface LogoProps {
 const Logo = ({ className = "" }: LogoProps) => {
   return (
     <motion.div 
-      className={`flex items-center space-x-2 ${className}`}
+      className={`flex items-center space-x-3 ${className}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
@@ -16,12 +16,12 @@ const Logo = ({ className = "" }: LogoProps) => {
       <motion.img
         src="/lovable-uploads/5de712a4-c5d1-47c7-b6cb-33966b952ac3.png"
         alt="Casulo Club Logo"
-        className="h-8 w-8"
+        className="h-12 w-12" // Increased size from h-8 w-8 to h-12 w-12
         whileHover={{ scale: 1.05 }}
       />
-      <span className="font-heading text-xl font-bold">
-        <span className="text-gradient">Casulo</span>
-        <span>Club</span>
+      <span className="font-heading text-2xl font-bold">
+        <span className="text-[#c4ba9f]">Casulo</span>
+        <span className="text-[#c4ba9f]">Club</span>
       </span>
     </motion.div>
   );
