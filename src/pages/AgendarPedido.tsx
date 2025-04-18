@@ -1,7 +1,8 @@
-
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Search, MapPin, ShoppingBag, User, Phone, FileText, Send } from "lucide-react";
+import { 
+  Calendar, Search, MapPin, ShoppingBag, User, Phone, FileText, Send, Coins 
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -47,14 +48,13 @@ const AgendarPedido = () => {
   const [regiaoSearch, setRegiaoSearch] = useState("");
   const [cidadeSearch, setCidadeSearch] = useState("");
   
-  // New address fields
   const [cep, setCep] = useState("");
   const [rua, setRua] = useState("");
   const [numero, setNumero] = useState("");
   const [bairro, setBairro] = useState("");
   const [cidade, setCidade] = useState("");
-  const [estado, setEstado] = useState("SP"); // Default to SP
-  
+  const [estado, setEstado] = useState("SP");
+
   const filteredProdutos = produtos.filter(prod => 
     prod.name.toLowerCase().includes(produtoSearch.toLowerCase())
   );
@@ -281,7 +281,8 @@ const AgendarPedido = () => {
                 
                 <div className="space-y-2">
                   <Label htmlFor="cidade" className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4" /> Cidade
+                    <MapPin className="h-4 w-4" /> 
+                    <Coins className="h-4 w-4 text-primary" /> Cidade
                   </Label>
                   <div className="space-y-2">
                     <div className="relative">
