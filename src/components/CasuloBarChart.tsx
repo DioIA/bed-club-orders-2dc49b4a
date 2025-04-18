@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface CasuloBarChartProps {
-  customColors: string[];
-  timeFilterOptions: string[];
+  customColors?: string[];
+  timeFilterOptions?: string[];
 }
 
 // Sample data - replace with real data in production
@@ -18,7 +17,10 @@ const data = [
   { name: "Jun", Vendas: 2390, Comissão: 3800 },
 ];
 
-const CasuloBarChart = ({ customColors, timeFilterOptions }: CasuloBarChartProps) => {
+const CasuloBarChart = ({ 
+  customColors = ["#22C55E", "#16A34A"], 
+  timeFilterOptions = ["Últimos 7 dias", "Últimos 30 dias", "Este ano"]
+}: CasuloBarChartProps) => {
   const [timeFilter, setTimeFilter] = useState(timeFilterOptions[0]);
 
   return (

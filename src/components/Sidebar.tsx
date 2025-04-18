@@ -1,12 +1,14 @@
-
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   LayoutDashboard, Calendar, ClipboardList, 
-  Package, MapPin, LifeBuoy, HelpCircle, X 
+  Package, MapPin, LifeBuoy, HelpCircle, X, UserCircle 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Logo from "./Logo";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useState } from "react";
 
 interface SidebarProps {
   onClose: () => void;
@@ -35,6 +37,8 @@ const itemVariants = {
 };
 
 const Sidebar = ({ onClose }: SidebarProps) => {
+  const [profileOpen, setProfileOpen] = useState(false);
+
   return (
     <aside className="w-64 h-full bg-secondary/50 backdrop-blur-sm flex flex-col border-r">
       <div className="flex items-center justify-between p-4">
@@ -49,6 +53,21 @@ const Sidebar = ({ onClose }: SidebarProps) => {
         </Button>
       </div>
       
+      <div className="px-4 py-2 border-b">
+        <Button 
+          variant="ghost" 
+          className="w-full justify-start gap-2"
+          onClick={() => setProfileOpen(true)}
+        >
+          <Avatar className="h-6 w-6">
+            <AvatarFallback>
+              <UserCircle className="h-4 w-4" />
+            </AvatarFallback>
+          </Avatar>
+          <span className="text-sm">Perfil de Afiliado</span>
+        </Button>
+      </div>
+
       <motion.nav 
         className="flex-1 p-4"
         initial="hidden"
@@ -80,6 +99,19 @@ const Sidebar = ({ onClose }: SidebarProps) => {
           CasuloClub &copy; 2025
         </p>
       </div>
+
+      <Dialog open={profileOpen} onOpenChange={setProfileOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Complete seu perfil</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <p className="text-sm text-muted-foreground">
+              Esta funcionalidade será implementada em breve.
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </aside>
   );
 };
