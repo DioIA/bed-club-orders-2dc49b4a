@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Logo from "./Logo";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
+import { AffiliateProfileForm } from "./AffiliateProfileForm";
 
 interface SidebarProps {
   onClose: () => void;
@@ -106,13 +107,9 @@ const Sidebar = ({ onClose }: SidebarProps) => {
       <Dialog open={profileOpen} onOpenChange={setProfileOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Complete seu perfil</DialogTitle>
+            <DialogTitle>Perfil de Afiliado</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <p className="text-sm text-muted-foreground">
-              Esta funcionalidade será implementada em breve.
-            </p>
-          </div>
+          <AffiliateProfileForm />
         </DialogContent>
       </Dialog>
     </aside>
