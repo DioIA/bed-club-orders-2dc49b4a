@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Search, MapPin, ShoppingBag, User, Phone, FileText, Send } from "lucide-react";
@@ -31,6 +32,7 @@ import { regionsData } from "@/types/regions";
 
 const produtos = Object.values(products).flat();
 const regioes = regionsData.map(region => region.name);
+const todasCidades = regionsData.flatMap(region => region.cities.map(city => city.name));
 
 const AgendarPedido = () => {
   const [nome, setNome] = useState("");
@@ -43,6 +45,15 @@ const AgendarPedido = () => {
   
   const [produtoSearch, setProdutoSearch] = useState("");
   const [regiaoSearch, setRegiaoSearch] = useState("");
+  const [cidadeSearch, setCidadeSearch] = useState("");
+  
+  // New address fields
+  const [cep, setCep] = useState("");
+  const [rua, setRua] = useState("");
+  const [numero, setNumero] = useState("");
+  const [bairro, setBairro] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [estado, setEstado] = useState("SP"); // Default to SP
   
   const filteredProdutos = produtos.filter(prod => 
     prod.name.toLowerCase().includes(produtoSearch.toLowerCase())
@@ -51,10 +62,14 @@ const AgendarPedido = () => {
   const filteredRegioes = regioes.filter(reg => 
     reg.toLowerCase().includes(regiaoSearch.toLowerCase())
   );
+  
+  const filteredCidades = todasCidades.filter(city => 
+    city.toLowerCase().includes(cidadeSearch.toLowerCase())
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (nome && telefone && produto && regiao && endereco) {
+    if (nome && telefone && produto && regiao && endereco && cep && rua && numero && bairro && cidade) {
       setShowSuccess(true);
     }
   };
@@ -66,6 +81,11 @@ const AgendarPedido = () => {
     setRegiao("");
     setEndereco("");
     setObservacoes("");
+    setCep("");
+    setRua("");
+    setNumero("");
+    setBairro("");
+    setCidade("");
     setShowSuccess(false);
   };
 
@@ -204,6 +224,105 @@ const AgendarPedido = () => {
                   onChange={(e) => setEndereco(e.target.value)}
                   required
                 />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="cep" className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" /> CEP
+                  </Label>
+                  <Input 
+                    id="cep" 
+                    placeholder="00000-000" 
+                    value={cep}
+                    onChange={(e) => setCep(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="rua" className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" /> Rua
+                  </Label>
+                  <Input 
+                    id="rua" 
+                    placeholder="Nome da rua" 
+                    value={rua}
+                    onChange={(e) => setRua(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="numero" className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" /> Número
+                  </Label>
+                  <Input 
+                    id="numero" 
+                    placeholder="Número" 
+                    value={numero}
+                    onChange={(e) => setNumero(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="bairro" className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" /> Bairro
+                  </Label>
+                  <Input 
+                    id="bairro" 
+                    placeholder="Bairro" 
+                    value={bairro}
+                    onChange={(e) => setBairro(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="cidade" className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" /> Cidade
+                  </Label>
+                  <div className="space-y-2">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                      <Input 
+                        placeholder="Buscar cidade..." 
+                        className="pl-10"
+                        value={cidadeSearch}
+                        onChange={(e) => setCidadeSearch(e.target.value)}
+                      />
+                    </div>
+                    <Select 
+                      value={cidade} 
+                      onValueChange={setCidade}
+                      required
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione uma cidade" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-[300px]">
+                        {filteredCidades.map((city) => (
+                          <SelectItem key={city} value={city}>
+                            {city}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="estado" className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" /> Estado
+                  </Label>
+                  <Input 
+                    id="estado" 
+                    value={estado}
+                    readOnly
+                    className="bg-muted"
+                  />
+                </div>
               </div>
               
               <div className="space-y-2">

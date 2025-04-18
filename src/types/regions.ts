@@ -156,51 +156,5 @@ export const regionsData: Region[] = [
       { name: "Sao jose do rio pardo" },
       { name: "Ouro fino" }
     ]
-  },
-  {
-    name: "CIDADES DA PROMOÇÃO / RIBEIRÃO PRETO",
-    cities: [
-      { name: "Araraquara" },
-      { name: "Americo Brasiliense" },
-      { name: "Brodowski" },
-      { name: "boa Esperança do sul" },
-      { name: "Cravinhos" },
-      { name: "Dumont" },
-      { name: "Descalvado" },
-      { name: "Dourado" },
-      { name: "Ibate" },
-      { name: "Itirapina" },
-      { name: "Jardinopolis" },
-      { name: "Motuca" },
-      { name: "Pontal" },
-      { name: "Porto Ferreira" },
-      { name: "Pradopolis" },
-      { name: "Rincão" },
-      { name: "Ribeirão Bonito" },
-      { name: "Sao Carlos" },
-      { name: "Santa Lucia" },
-      { name: "Serrana" },
-      { name: "Serra Azul" },
-      { name: "Sertãozinho" }
-    ]
-  },
-  {
-    name: "CIDADES DA PROMOÇÃO / LIMEIRA",
-    cities: [
-      { name: "Araras" },
-      { name: "Americana" },
-      { name: "Aguas de Sao Pedro" },
-      { name: "Corumbatai" },
-      { name: "Charqueada" },
-      { name: "Cordeiropolis" },
-      { name: "Ipeuna" },
-      { name: "Leme" },
-      { name: "Pirassununga" },
-      { name: "Piracicaba" },
-      { name: "Rio Claro" },
-      { name: "Santa Bárbara do Oeste" },
-      { name: "Santa Gertrudes" },
-      { name: "São Pedro" }
-    ]
   }
-];
+]
