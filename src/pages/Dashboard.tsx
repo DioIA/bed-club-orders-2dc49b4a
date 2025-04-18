@@ -1,72 +1,26 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Wallet, TrendingUp, Users, Calendar, PackageCheck, PackageX, DollarSign } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import PaymentDrawer from "@/components/PaymentDrawer";
+import CasuloBarChart from "@/components/CasuloBarChart";
 
 // Status types
 type StatusType = "preparing" | "pending" | "delivered" | "transit";
 
-// Order interface
-interface OrderData {
-  id: string;
-  clientName: string;
-  product: string;
-  region: string;
-  status: StatusType;
-  date: string;
-  address: string;
-}
-
-// Sample data
-const initialOrders: OrderData[] = [
-  {
-    id: "1",
-    clientName: "João Silva",
-    product: "Colchão Queen 7cm",
-    region: "São Paulo - Zona Norte",
-    status: "preparing",
-    date: "2025-04-18",
-    address: "Rua das Flores, 123"
-  },
-  {
-    id: "2",
-    clientName: "Maria Santos",
-    product: "Colchão Casal 14cm",
-    region: "São Paulo - Zona Sul",
-    status: "transit",
-    date: "2025-04-17",
-    address: "Av. Paulista, 1000"
-  },
-  {
-    id: "3",
-    clientName: "Roberto Almeida",
-    product: "Colchão Solteiro 7cm",
-    region: "São Paulo - Zona Leste",
-    status: "delivered",
-    date: "2025-04-16",
-    address: "Rua dos Girassóis, 45"
-  },
-  {
-    id: "4",
-    clientName: "Ana Oliveira",
-    product: "Box Queen Base",
-    region: "São Paulo - Zona Oeste",
-    status: "pending",
-    date: "2025-04-15",
-    address: "Rua das Palmeiras, 789"
-  }
+// Sample data for top cards
+const topCardsData = [
+  { title: "Faturamento", value: "R$ 25.890,00", icon: DollarSign, change: "+12.5%" },
+  { title: "Comissão", value: "R$ 5.178,00", icon: TrendingUp, change: "+8.2%" },
+  { title: "Clientes", value: "152", icon: Users, change: "+22.3%" },
+  { title: "Pedidos Agendados", value: "28", icon: Calendar, change: "+4.1%" },
+  { title: "Pedidos Entregues", value: "94", icon: PackageCheck, change: "+18.7%" },
+  { title: "Pedidos Cancelados", value: "7", icon: PackageX, change: "-2.3%" },
 ];
-
-const statusLabels = {
-  preparing: "Preparando",
-  pending: "Pendente",
-  delivered: "Entregue",
-  transit: "Em Transporte"
-};
 
 const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -85,12 +39,52 @@ const Dashboard = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
+        className="flex justify-between items-center"
       >
-        <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
-        <p className="text-muted-foreground mb-6">
-          Acompanhe todos os pedidos em tempo real.
-        </p>
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
+          <p className="text-muted-foreground">
+            Acompanhe todos os pedidos em tempo real.
+          </p>
+        </div>
+        <Button 
+          variant="outline" 
+          className="flex items-center gap-2"
+          onClick={() => document.getElementById('payment-drawer')?.click()}
+        >
+          <Wallet className="h-4 w-4" />
+          Pagamentos e Saque
+        </Button>
       </motion.div>
+
+      {/* Top Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+        {topCardsData.map((card, index) => (
+          <motion.div
+            key={card.title}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+          >
+            <Card className="glass-card">
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between">
+                  <div className="rounded-lg p-2 bg-primary/10">
+                    <card.icon className="h-4 w-4 text-primary" />
+                  </div>
+                  <Badge variant={card.change.startsWith('+') ? "default" : "destructive"} className="text-xs">
+                    {card.change}
+                  </Badge>
+                </div>
+                <div className="mt-3">
+                  <p className="text-sm text-muted-foreground">{card.title}</p>
+                  <h3 className="text-2xl font-bold mt-1">{card.value}</h3>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
 
       {/* Search and filter */}
       <motion.div 
@@ -114,7 +108,27 @@ const Dashboard = () => {
         </Button>
       </motion.div>
 
-      {/* Order cards */}
+      {/* Bar Chart */}
+      <Card className="glass-card p-4">
+        <h3 className="font-bold text-lg mb-4">Análise de Vendas</h3>
+        <div className="h-[400px]">
+          <CasuloBarChart
+            customColors={["#22C55E", "#A7F3D0"]}
+            timeFilterOptions={[
+              "7 dias",
+              "15 dias",
+              "30 dias",
+              "2 meses",
+              "5 meses",
+              "8 meses",
+              "1 ano",
+              "Todo tempo"
+            ]}
+          />
+        </div>
+      </Card>
+
+      {/* Orders Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredOrders.map((order, index) => (
           <motion.div
@@ -156,6 +170,9 @@ const Dashboard = () => {
           </motion.div>
         ))}
       </div>
+
+      {/* Payment Drawer Component */}
+      <PaymentDrawer />
     </div>
   );
 };
