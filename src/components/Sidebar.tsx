@@ -40,7 +40,10 @@ const Sidebar = ({ onClose }: SidebarProps) => {
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
-    <aside className="w-64 h-full bg-secondary/50 backdrop-blur-sm flex flex-col border-r">
+    <aside 
+      className="w-64 h-full bg-[#0e3d27] flex flex-col border-r text-white" 
+      style={{ backgroundColor: '#0e3d27' }}
+    >
       <div className="flex items-center justify-between p-4">
         <Logo />
         <Button 
@@ -82,8 +85,8 @@ const Sidebar = ({ onClose }: SidebarProps) => {
                 className={({ isActive }) => `
                   flex items-center px-4 py-3 rounded-lg transition-colors
                   ${isActive 
-                    ? 'bg-primary text-primary-foreground' 
-                    : 'hover:bg-primary/10 text-foreground'}
+                    ? 'bg-white/20 text-white' 
+                    : 'hover:bg-white/10 text-white/80'}
                 `}
               >
                 <item.icon className="w-5 h-5 mr-3" />
@@ -94,8 +97,8 @@ const Sidebar = ({ onClose }: SidebarProps) => {
         </ul>
       </motion.nav>
       
-      <div className="p-4 border-t">
-        <p className="text-sm text-muted-foreground text-center">
+      <div className="p-4 border-t border-white/10 text-white/60">
+        <p className="text-sm text-center">
           CasuloClub &copy; 2025
         </p>
       </div>
