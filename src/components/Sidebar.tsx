@@ -1,8 +1,9 @@
+
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   LayoutDashboard, Calendar, ClipboardList, 
-  Package, MapPin, LifeBuoy, HelpCircle, X, UserCircle 
+  Package, MapPin, LifeBuoy, HelpCircle, X, UserCircle, LogOut, Notebook
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -10,6 +11,13 @@ import Logo from "./Logo";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
 import { AffiliateProfileForm } from "./AffiliateProfileForm";
+import { useAuth } from '@/context/AuthContext';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface SidebarProps {
   onClose: () => void;
@@ -33,12 +41,14 @@ const navItems = [
   { path: "/acompanhamento", label: "Acompanhamento", icon: ClipboardList },
   { path: "/produtos", label: "Produtos", icon: Package },
   { path: "/regioes", label: "Regiões de Entrega", icon: MapPin },
+  { path: "/notas", label: "Minhas Notas", icon: Notebook },
   { path: "/suporte", label: "Suporte", icon: LifeBuoy },
   { path: "/sac", label: "SAC / Perguntas", icon: HelpCircle },
 ];
 
 const Sidebar = ({ onClose }: SidebarProps) => {
   const [profileOpen, setProfileOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   return (
     <aside 
@@ -58,18 +68,33 @@ const Sidebar = ({ onClose }: SidebarProps) => {
       </div>
       
       <div className="px-4 py-2 border-b">
-        <Button 
-          variant="ghost" 
-          className="w-full justify-start gap-2"
-          onClick={() => setProfileOpen(true)}
-        >
-          <Avatar className="h-6 w-6">
-            <AvatarFallback>
-              <UserCircle className="h-4 w-4" />
-            </AvatarFallback>
-          </Avatar>
-          <span className="text-sm">Perfil de Afiliado</span>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button 
+              variant="ghost" 
+              className="w-full justify-start gap-2"
+            >
+              <Avatar className="h-6 w-6">
+                <AvatarFallback>
+                  <UserCircle className="h-4 w-4" />
+                </AvatarFallback>
+              </Avatar>
+              <span className="text-sm truncate">
+                {user?.email?.split('@')[0] || 'Usuário'}
+              </span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-56">
+            <DropdownMenuItem onClick={() => setProfileOpen(true)}>
+              <UserCircle className="mr-2 h-4 w-4" />
+              <span>Perfil de Afiliado</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut()}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Sair</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <motion.nav 
