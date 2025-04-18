@@ -14,7 +14,7 @@ const Logo = ({ className = "" }: LogoProps) => {
       transition={{ duration: 0.3 }}
     >
       <motion.img
-        src="/lovable-uploads/cd46834d-9a51-44a7-aa38-3d32ce5ada8a.png"
+        src="/lovable-uploads/9377902c-fb43-4de7-9c53-d93533a3f386.png"
         alt="Casulo Club Logo"
         className="h-12 w-12"
         whileHover={{ scale: 1.05 }}
