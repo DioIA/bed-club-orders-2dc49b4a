@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -47,6 +46,7 @@ type SignupForm = z.infer<typeof signupSchema>;
 const Auth = () => {
   const [activeTab, setActiveTab] = useState<string>('login');
   const { signIn, signUp, loading } = useAuth();
+  const [error, setError] = useState<string | null>(null);
 
   const loginForm = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
@@ -67,11 +67,25 @@ const Auth = () => {
   });
 
   const onLoginSubmit = async (data: LoginForm) => {
-    await signIn(data.email, data.password);
+    setError(null);
+    try {
+      await signIn(data.email, data.password);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
+    }
   };
 
   const onSignupSubmit = async (data: SignupForm) => {
-    await signUp(data.email, data.password, data.fullName);
+    setError(null);
+    try {
+      await signUp(data.email, data.password, data.fullName);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
+    }
   };
 
   return (
@@ -96,6 +110,12 @@ const Auth = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md text-sm">
+                {error}
+              </div>
+            )}
+            
             <Tabs defaultValue="login" value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-2 mb-4">
                 <TabsTrigger value="login">Login</TabsTrigger>

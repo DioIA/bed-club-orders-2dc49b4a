@@ -27,12 +27,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Configurar o listener de mudança de estado primeiro
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, currentSession) => {
+        console.log("Auth state change event:", event);
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
 
         if (event === 'SIGNED_IN') {
+          console.log("Usuário autenticado com sucesso!", currentSession?.user);
           navigate('/');
         } else if (event === 'SIGNED_OUT') {
+          console.log("Usuário desconectado");
           navigate('/auth');
         }
       }
@@ -40,6 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Verificar a sessão atual depois
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      console.log("Sessão atual:", currentSession);
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
       setLoading(false);
@@ -51,11 +55,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      console.log("Tentando fazer login com:", { email });
+      
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       
       if (error) {
-        throw error;
+        console.error("Erro de login:", error);
+        
+        // Mensagens de erro mais específicas
+        if (error.message.includes("Invalid login credentials")) {
+          throw new Error("Email ou senha incorretos");
+        } else if (error.message.includes("Email not confirmed")) {
+          throw new Error("Email não confirmado. Por favor, verifique sua caixa de entrada");
+        } else {
+          throw error;
+        }
       }
+      
+      console.log("Login bem-sucedido:", data);
       
       toast({
         title: "Login realizado com sucesso!",
@@ -75,7 +92,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signUp({
+      console.log("Tentando criar conta com:", { email, fullName });
+      
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -86,8 +105,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       });
       
       if (error) {
-        throw error;
+        console.error("Erro ao criar conta:", error);
+        
+        if (error.message.includes("User already registered")) {
+          throw new Error("Este email já está cadastrado");
+        } else {
+          throw error;
+        }
       }
+      
+      console.log("Cadastro realizado:", data);
       
       toast({
         title: "Conta criada com sucesso!",

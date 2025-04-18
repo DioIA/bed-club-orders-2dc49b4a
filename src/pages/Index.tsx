@@ -11,6 +11,7 @@ const Index = () => {
 
   useEffect(() => {
     if (!loading && user) {
+      console.log("Usuário autenticado na página inicial, redirecionando para o dashboard");
       navigate('/');
     }
   }, [user, loading, navigate]);
