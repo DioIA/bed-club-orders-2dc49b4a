@@ -1,4 +1,3 @@
-
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
@@ -15,16 +14,6 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-const navItems = [
-  { path: "/", label: "Dashboard", icon: LayoutDashboard },
-  { path: "/agendar-pedido", label: "Agendar Pedido", icon: Calendar },
-  { path: "/acompanhamento", label: "Acompanhamento", icon: ClipboardList },
-  { path: "/produtos", label: "Produtos", icon: Package },
-  { path: "/regioes", label: "Regiões de Entrega", icon: MapPin },
-  { path: "/suporte", label: "Suporte", icon: LifeBuoy },
-  { path: "/sac", label: "SAC / Perguntas", icon: HelpCircle },
-];
-
 const itemVariants = {
   hidden: { opacity: 0, x: -20 },
   visible: (i: number) => ({
@@ -37,13 +26,23 @@ const itemVariants = {
   }),
 };
 
+const navItems = [
+  { path: "/", label: "Dashboard", icon: LayoutDashboard },
+  { path: "/agendar-pedido", label: "Agendar Pedido", icon: Calendar },
+  { path: "/acompanhamento", label: "Acompanhamento", icon: ClipboardList },
+  { path: "/produtos", label: "Produtos", icon: Package },
+  { path: "/regioes", label: "Regiões de Entrega", icon: MapPin },
+  { path: "/suporte", label: "Suporte", icon: LifeBuoy },
+  { path: "/sac", label: "SAC / Perguntas", icon: HelpCircle },
+];
+
 const Sidebar = ({ onClose }: SidebarProps) => {
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
     <aside 
       className="w-64 h-full bg-sidebar sidebar-background flex flex-col border-r text-white" 
-      style={{ backgroundColor: '#1B4332' }} // Verde militar
+      style={{ backgroundColor: '#1B4332' }}
     >
       <div className="flex items-center justify-between p-4">
         <Logo />
@@ -86,12 +85,12 @@ const Sidebar = ({ onClose }: SidebarProps) => {
                 className={({ isActive }) => `
                   flex items-center px-4 py-3 rounded-lg transition-colors
                   ${isActive 
-                    ? 'bg-white/20 text-white' 
-                    : 'hover:bg-white/10 text-white/80'}
+                    ? 'bg-white/20 text-white font-medium' 
+                    : 'hover:bg-white/10 text-white/90 hover:text-white'}
                 `}
               >
                 <item.icon className="w-5 h-5 mr-3" />
-                <span>{item.label}</span>
+                <span className="font-medium">{item.label}</span>
               </NavLink>
             </motion.li>
           ))}
