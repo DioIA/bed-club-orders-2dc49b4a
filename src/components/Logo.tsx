@@ -14,12 +14,12 @@ const Logo = ({ className = "" }: LogoProps) => {
       transition={{ duration: 0.3 }}
     >
       <motion.img
-        src="/lovable-uploads/9377902c-fb43-4de7-9c53-d93533a3f386.png"
+        src="/lovable-uploads/ac3cc490-90c2-4609-a7e6-9081ded12f74.png"
         alt="Casulo Club Logo"
         className="h-12 w-12"
         whileHover={{ scale: 1.05 }}
       />
-      <span className="font-heading text-2xl font-bold">
+      <span className="font-heading text-2xl font-black tracking-tight">
         <span className="text-[#c4ba9f]">Casulo</span>
         <span className="text-white">Club</span>
       </span>
