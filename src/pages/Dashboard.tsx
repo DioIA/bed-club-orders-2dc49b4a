@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import PaymentDrawer from "@/components/PaymentDrawer";
 import CasuloBarChart from "@/components/CasuloBarChart";
+import { OrderData, initialOrders, statusLabels } from "@/components/ui/sidebar"; 
 
 // Status types
 type StatusType = "preparing" | "pending" | "delivered" | "transit";
