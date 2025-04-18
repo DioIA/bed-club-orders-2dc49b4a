@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FileSpreadsheet, Search } from "lucide-react";
+import { FileSpreadsheet, Search, Upload } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -10,6 +10,8 @@ import { products, Product } from "@/data/products";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+
+const MAX_PHOTOS = 8;
 
 const ProductList = ({ items }: { items: Product[] }) => (
   <div className="grid grid-cols-1 gap-4">
@@ -28,22 +30,46 @@ const ProductList = ({ items }: { items: Product[] }) => (
                 <p className="text-sm font-medium mt-1">{product.name}</p>
               </div>
               <div>
-                <Label htmlFor={`monetizze-${product.id}`}>Monetizze</Label>
+                <Label htmlFor={`description-${product.id}`}>Descrição</Label>
                 <Textarea
-                  id={`monetizze-${product.id}`}
-                  placeholder="Descrição para Monetizze"
+                  id={`description-${product.id}`}
+                  placeholder="Adicione a descrição do produto"
                   className="mt-1"
-                  defaultValue={product.monetizze}
+                  defaultValue={product.description}
                 />
               </div>
               <div>
-                <Label htmlFor={`logozz-${product.id}`}>Logzz</Label>
-                <Textarea
-                  id={`logozz-${product.id}`}
-                  placeholder="Descrição para Logzz"
-                  className="mt-1"
-                  defaultValue={product.logozz}
-                />
+                <Label htmlFor={`photos-${product.id}`}>Fotos</Label>
+                <div className="mt-2 grid grid-cols-4 gap-2">
+                  {Array.from({ length: MAX_PHOTOS }).map((_, photoIndex) => (
+                    <div
+                      key={photoIndex}
+                      className="aspect-square relative border-2 border-dashed rounded-lg flex items-center justify-center bg-muted/50 hover:bg-muted transition-colors cursor-pointer group"
+                    >
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        onChange={(e) => {
+                          // Handle file upload
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            console.log(`Uploading photo ${photoIndex + 1} for product ${product.id}`);
+                          }
+                        }}
+                      />
+                      {product.photos?.[photoIndex] ? (
+                        <img
+                          src={product.photos[photoIndex]}
+                          alt={`Product photo ${photoIndex + 1}`}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      ) : (
+                        <Upload className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </CardContent>

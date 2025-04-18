@@ -2,8 +2,8 @@
 export interface Product {
   id: string;
   name: string;
-  monetizze?: string;
-  logozz?: string;
+  description?: string;
+  photos?: string[];
 }
 
 export const products = {

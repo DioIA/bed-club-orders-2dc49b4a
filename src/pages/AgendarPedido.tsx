@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Search, MapPin, ShoppingBag, User, Phone, FileText, Send } from "lucide-react";
@@ -13,70 +12,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { products } from "@/data/products";
+import { regionsData } from "@/types/regions";
 
-// Dados dos produtos (simulando os 32 produtos da tabela)
-const produtos = [
-  "Colchão Solteiro 7cm",
-  "Colchão Solteiro 14cm",
-  "Colchão Solteiro 18cm",
-  "Colchão Solteiro 25cm",
-  "Colchão Casal 7cm",
-  "Colchão Casal 14cm",
-  "Colchão Casal 18cm",
-  "Colchão Casal 25cm",
-  "Colchão Queen 7cm",
-  "Colchão Queen 14cm",
-  "Colchão Queen 18cm",
-  "Colchão Queen 25cm",
-  "Colchão King 7cm",
-  "Colchão King 14cm",
-  "Colchão King 18cm",
-  "Colchão King 25cm",
-  "Box Solteiro Base",
-  "Box Solteiro Baú",
-  "Box Casal Base",
-  "Box Casal Baú",
-  "Box Queen Base",
-  "Box Queen Baú",
-  "Box King Base",
-  "Box King Baú",
-  "Bicama Solteiro",
-  "Bicama Auxiliar",
-  "Travesseiro Tradicional",
-  "Travesseiro Cervical",
-  "Kit 2 Travesseiros",
-  "Kit 4 Travesseiros",
-  "Protetor Impermeável",
-  "Jogo de Lençol"
-];
-
-// Dados das regiões
-const regioes = [
-  "São Paulo - Zona Norte",
-  "São Paulo - Zona Sul",
-  "São Paulo - Zona Leste",
-  "São Paulo - Zona Oeste",
-  "São Paulo - Centro",
-  "Guarulhos",
-  "ABC Paulista",
-  "Osasco",
-  "Campinas",
-  "Sorocaba"
-];
+const produtos = Object.values(products).flat();
+const regioes = regionsData.map(region => region.name);
 
 const AgendarPedido = () => {
   const [nome, setNome] = useState("");
@@ -87,13 +27,11 @@ const AgendarPedido = () => {
   const [observacoes, setObservacoes] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
   
-  // Filtros de busca
   const [produtoSearch, setProdutoSearch] = useState("");
   const [regiaoSearch, setRegiaoSearch] = useState("");
   
-  // Filtrando os produtos e regiões
   const filteredProdutos = produtos.filter(prod => 
-    prod.toLowerCase().includes(produtoSearch.toLowerCase())
+    prod.name.toLowerCase().includes(produtoSearch.toLowerCase())
   );
   
   const filteredRegioes = regioes.filter(reg => 
@@ -102,10 +40,8 @@ const AgendarPedido = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simular agendamento bem-sucedido
     if (nome && telefone && produto && regiao && endereco) {
       setShowSuccess(true);
-      // Aqui você poderia adicionar o pedido a uma API ou estado global
     }
   };
   
@@ -200,8 +136,8 @@ const AgendarPedido = () => {
                       </SelectTrigger>
                       <SelectContent className="max-h-[300px]">
                         {filteredProdutos.map((prod) => (
-                          <SelectItem key={prod} value={prod}>
-                            {prod}
+                          <SelectItem key={prod.id} value={prod.name}>
+                            {prod.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -277,7 +213,6 @@ const AgendarPedido = () => {
         </Card>
       </motion.div>
 
-      {/* Diálogo de sucesso */}
       <Dialog open={showSuccess} onOpenChange={setShowSuccess}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
