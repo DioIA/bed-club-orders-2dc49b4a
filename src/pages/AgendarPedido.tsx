@@ -43,7 +43,8 @@ const AgendarPedido = () => {
   const [endereco, setEndereco] = useState("");
   const [observacoes, setObservacoes] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
-  
+  const [valor, setValor] = useState("");
+
   const [produtoSearch, setProdutoSearch] = useState("");
   const [regiaoSearch, setRegiaoSearch] = useState("");
   const [cidadeSearch, setCidadeSearch] = useState("");
@@ -69,7 +70,19 @@ const AgendarPedido = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (nome && telefone && produto && regiao && endereco && cep && rua && numero && bairro && cidade) {
+    if (
+      nome && 
+      telefone && 
+      produto && 
+      regiao && 
+      endereco && 
+      cep && 
+      rua && 
+      numero && 
+      bairro && 
+      cidade &&
+      valor
+    ) {
       setShowSuccess(true);
     }
   };
@@ -87,6 +100,7 @@ const AgendarPedido = () => {
     setBairro("");
     setCidade("");
     setShowSuccess(false);
+    setValor("");
   };
 
   return (
@@ -336,6 +350,21 @@ const AgendarPedido = () => {
                   rows={3}
                   value={observacoes}
                   onChange={(e) => setObservacoes(e.target.value)}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="valor" className="flex items-center gap-2">
+                  <Coins className="h-4 w-4" /> Valor da Venda
+                </Label>
+                <Input 
+                  id="valor" 
+                  type="number"
+                  step="0.01"
+                  placeholder="Digite o valor total da venda" 
+                  value={valor}
+                  onChange={(e) => setValor(e.target.value)}
+                  required
                 />
               </div>
               
