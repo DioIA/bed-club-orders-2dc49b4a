@@ -4,9 +4,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Note, CreateNoteInput, UpdateNoteInput } from '@/types/note';
 import { useToast } from '@/components/ui/use-toast';
+import { useAuth } from '@/context/AuthContext';
 
 export function useNotes() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const [activeNote, setActiveNote] = useState<Note | null>(null);
 
@@ -31,9 +33,17 @@ export function useNotes() {
   // Create a new note
   const createNoteMutation = useMutation({
     mutationFn: async (noteInput: CreateNoteInput) => {
+      if (!user) throw new Error("Usuário não autenticado");
+      
+      // Add user_id to the note input
+      const noteWithUserId = {
+        ...noteInput,
+        user_id: user.id
+      };
+      
       const { data, error } = await supabase
         .from('notes')
-        .insert(noteInput)
+        .insert(noteWithUserId)
         .select()
         .single();
       
