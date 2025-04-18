@@ -21,7 +21,7 @@ const Logo = ({ className = "" }: LogoProps) => {
       />
       <span className="font-heading text-2xl font-bold">
         <span className="text-[#c4ba9f]">Casulo</span>
-        <span className="text-[#c4ba9f]">Club</span>
+        <span className="text-white">Club</span>
       </span>
     </motion.div>
   );
