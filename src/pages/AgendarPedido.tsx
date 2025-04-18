@@ -341,19 +341,6 @@ const AgendarPedido = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="observacoes" className="flex items-center gap-2">
-                  <FileText className="h-4 w-4" /> Observações (Opcional)
-                </Label>
-                <Textarea 
-                  id="observacoes" 
-                  placeholder="Adicione informações importantes..." 
-                  rows={3}
-                  value={observacoes}
-                  onChange={(e) => setObservacoes(e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
                 <Label htmlFor="valor" className="flex items-center gap-2">
                   <Coins className="h-4 w-4" /> Valor da Venda
                 </Label>
@@ -365,6 +352,19 @@ const AgendarPedido = () => {
                   value={valor}
                   onChange={(e) => setValor(e.target.value)}
                   required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="observacoes" className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" /> Observações (Opcional)
+                </Label>
+                <Textarea 
+                  id="observacoes" 
+                  placeholder="Adicione informações importantes..." 
+                  rows={3}
+                  value={observacoes}
+                  onChange={(e) => setObservacoes(e.target.value)}
                 />
               </div>
               
