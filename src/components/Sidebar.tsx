@@ -1,5 +1,5 @@
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   LayoutDashboard, Calendar, ClipboardList, 
@@ -49,6 +49,16 @@ const navItems = [
 const Sidebar = ({ onClose }: SidebarProps) => {
   const [profileOpen, setProfileOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  // Handles navigation while properly closing the sidebar on mobile
+  const handleNavigation = (path: string) => {
+    if (window.innerWidth < 768) {
+      onClose();
+    }
+    navigate(path);
+    return false; // Prevent default behavior
+  };
 
   return (
     <aside 
@@ -120,12 +130,13 @@ const Sidebar = ({ onClose }: SidebarProps) => {
                     ? 'bg-white/20 text-white font-medium' 
                     : 'hover:bg-white/10 text-white/90 hover:text-white'}
                 `}
-                onClick={(e) => {
+                onClick={() => {
                   // Para dispositivos móveis, feche a sidebar após clicar
                   if (window.innerWidth < 768) {
                     onClose();
                   }
                 }}
+                end
               >
                 <item.icon className="w-5 h-5 mr-3 flex-shrink-0" />
                 <span className="font-medium">{item.label}</span>
