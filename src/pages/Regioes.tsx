@@ -34,9 +34,10 @@ const Regioes = () => {
   );
 
   // Handle accordion item click with a debounce to prevent issues
-  const handleAccordionClick = useCallback((value: string) => {
+  // Updated to handle string[] type since "multiple" accordion returns an array of values
+  const handleAccordionClick = useCallback((value: string[]) => {
     // This console log helps debug if the click handler is being called
-    console.log("Accordion item clicked:", value);
+    console.log("Accordion items open:", value);
   }, []);
 
   // Handle promotion card click
