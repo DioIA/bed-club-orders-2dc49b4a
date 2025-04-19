@@ -1,7 +1,7 @@
 
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Search, MapPin, Info } from "lucide-react";
+import { Search, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -13,8 +13,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { regionsData, Region, City } from "@/types/regions";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "sonner";
 
 const Regioes = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,18 +31,6 @@ const Regioes = () => {
     region.name.toLowerCase().includes(searchTerm.toLowerCase()) || region.cities.length > 0
   );
 
-  // Handle accordion item click with a debounce to prevent issues
-  // Updated to handle string[] type since "multiple" accordion returns an array of values
-  const handleAccordionClick = useCallback((value: string[]) => {
-    // This console log helps debug if the click handler is being called
-    console.log("Accordion items open:", value);
-  }, []);
-
-  // Handle promotion card click
-  const handlePromoClick = useCallback((promo: string) => {
-    toast.info(`Informações sobre a promoção ${promo} serão exibidas em breve.`);
-  }, []);
-
   return (
     <div className="space-y-6">
       <motion.div
@@ -56,14 +42,6 @@ const Regioes = () => {
         <p className="text-muted-foreground mb-6">
           Gerencie as regiões disponíveis para entrega.
         </p>
-        
-        <div className="bg-primary/20 p-4 rounded-lg mb-6 flex items-start gap-2">
-          <Info className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-          <p className="text-sm">
-            Esta área é exclusiva para administradores. Aqui você pode visualizar todas as regiões de entrega
-            e suas respectivas cidades.
-          </p>
-        </div>
       </motion.div>
 
       {/* Search */}
@@ -84,54 +62,6 @@ const Regioes = () => {
         </div>
       </motion.div>
 
-      {/* Promoções - Using Tabs for better interaction */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.5 }}
-      >
-        <Tabs defaultValue="duvidas" className="w-full">
-          <TabsList className="w-full grid grid-cols-3 mb-4">
-            <TabsTrigger value="duvidas">Dúvidas da Promoção</TabsTrigger>
-            <TabsTrigger value="ribeirao">Promoção Ribeirão</TabsTrigger>
-            <TabsTrigger value="limeira">Promoção Limeira</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="duvidas">
-            <Card className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200">
-              <CardContent className="p-4">
-                <h3 className="font-bold text-amber-800">Dúvidas da Promoção</h3>
-                <p className="text-sm text-amber-700 mt-1">
-                  Informações sobre as promoções atuais e como participar.
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="ribeirao">
-            <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
-              <CardContent className="p-4">
-                <h3 className="font-bold text-green-800">Promoção Ribeirão Preto</h3>
-                <p className="text-sm text-green-700 mt-1">
-                  Descontos especiais para a região de Ribeirão Preto.
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="limeira">
-            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-              <CardContent className="p-4">
-                <h3 className="font-bold text-blue-800">Promoção Limeira</h3>
-                <p className="text-sm text-blue-700 mt-1">
-                  Condições especiais para pedidos na região de Limeira e cidades próximas.
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </motion.div>
-
       {/* Regions Accordion */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -142,7 +72,6 @@ const Regioes = () => {
         <Accordion 
           type="multiple" 
           className="space-y-4"
-          onValueChange={handleAccordionClick}
         >
           {filteredRegions.map((region, index) => (
             <AccordionItem
