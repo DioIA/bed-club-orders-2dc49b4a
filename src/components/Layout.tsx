@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { AnimatePresence, motion } from "framer-motion";
@@ -8,7 +8,28 @@ import { Button } from "@/components/ui/button";
 import Logo from "./Logo";
 
 const Layout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar se é dispositivo móvel
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth >= 768) {
+        setSidebarOpen(true);
+      } else {
+        setSidebarOpen(false);
+      }
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   return (
     <div className="h-screen flex flex-col md:flex-row bg-background text-foreground overflow-hidden">
@@ -17,8 +38,9 @@ const Layout = () => {
         <div className="flex items-center">
           <Button 
             variant="ghost" 
-            size="icon" 
-            onClick={() => setSidebarOpen(!sidebarOpen)}
+            size="icon"
+            className="focus:outline-none"
+            onClick={toggleSidebar}
           >
             <Menu className="h-6 w-6" />
           </Button>
@@ -26,22 +48,41 @@ const Layout = () => {
         </div>
       </header>
 
-      {/* Sidebar */}
-      <AnimatePresence mode="wait">
-        {(sidebarOpen || window.innerWidth >= 768) && (
-          <motion.div
-            initial={{ x: -300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -300, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className={`${
-              sidebarOpen ? "block" : "hidden md:block"
-            } fixed md:relative z-40 h-screen`}
-          >
-            <Sidebar onClose={() => setSidebarOpen(false)} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Sidebar - Mobile (Overlay) */}
+      {isMobile && (
+        <AnimatePresence>
+          {sidebarOpen && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.5 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black z-30"
+                onClick={() => setSidebarOpen(false)}
+              />
+              
+              {/* Sidebar */}
+              <motion.div
+                initial={{ x: -300 }}
+                animate={{ x: 0 }}
+                exit={{ x: -300 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="fixed left-0 top-0 z-40 h-screen"
+              >
+                <Sidebar onClose={() => setSidebarOpen(false)} />
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      )}
+
+      {/* Sidebar - Desktop (Fixed) */}
+      {!isMobile && (
+        <div className="hidden md:block h-screen">
+          <Sidebar onClose={() => setSidebarOpen(false)} />
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto p-4 md:p-8">

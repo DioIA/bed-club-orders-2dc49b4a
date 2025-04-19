@@ -36,8 +36,11 @@ const Index = () => {
         <p className="text-xl text-gray-600 mb-8">
           O sistema completo para gerenciar seus pedidos, produtos e regiões de entrega.
         </p>
-        <div className="space-x-4">
-          <Button className="px-6" onClick={() => navigate('/auth')}>
+        <div>
+          <Button 
+            className="px-6 py-6 text-lg h-auto" 
+            onClick={() => navigate('/auth')}
+          >
             Acessar o Sistema
           </Button>
         </div>
