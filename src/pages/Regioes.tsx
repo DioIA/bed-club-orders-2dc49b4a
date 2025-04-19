@@ -1,33 +1,23 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, Plus, MapPin, Edit, Trash, Info, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, MapPin, Info } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { regionsData, Region, City } from "@/types/regions";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Regioes = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [regions, setRegions] = useState<Region[]>(regionsData);
-  const [newRegion, setNewRegion] = useState({ name: "", cities: [] });
-  const [editingRegion, setEditingRegion] = useState<{index: number, value: Region} | null>(null);
+  const [regions] = useState<Region[]>(regionsData);
+  const isMobile = useIsMobile();
 
   // Filter regions and cities based on search term
   const filteredRegions = regions.map(region => ({
@@ -78,11 +68,46 @@ const Regioes = () => {
         </div>
       </motion.div>
 
-      {/* Regions Accordion */}
+      {/* Promoções */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
+      >
+        <Card className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200">
+          <CardContent className="p-4">
+            <h3 className="font-bold text-amber-800">Dúvidas da Promoção</h3>
+            <p className="text-sm text-amber-700 mt-1">
+              Informações sobre as promoções atuais e como participar.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+          <CardContent className="p-4">
+            <h3 className="font-bold text-green-800">Promoção Ribeirão Preto</h3>
+            <p className="text-sm text-green-700 mt-1">
+              Descontos especiais para a região de Ribeirão Preto.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="md:col-span-2 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+          <CardContent className="p-4">
+            <h3 className="font-bold text-blue-800">Promoção Limeira</h3>
+            <p className="text-sm text-blue-700 mt-1">
+              Condições especiais para pedidos na região de Limeira e cidades próximas.
+            </p>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Regions Accordion */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
         className="grid gap-4"
       >
         <Accordion type="multiple" className="space-y-4">
@@ -102,7 +127,7 @@ const Regioes = () => {
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-4 pb-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 pt-2">
+                <div className={`grid grid-cols-1 ${isMobile ? "" : "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"} gap-2 pt-2`}>
                   {region.cities.map((city, cityIndex) => (
                     <div
                       key={cityIndex}
