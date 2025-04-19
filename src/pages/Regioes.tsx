@@ -1,9 +1,8 @@
 
-import { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Search, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Accordion,
   AccordionContent,
@@ -18,11 +17,8 @@ const Regioes = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const isMobile = useIsMobile();
   
-  // Use regionsData directly instead of useState to avoid reactivity issues
-  const regions = regionsData;
-
   // Filter regions and cities based on search term
-  const filteredRegions = regions.map(region => ({
+  const filteredRegions = regionsData.map(region => ({
     ...region,
     cities: region.cities.filter(city => 
       city.name.toLowerCase().includes(searchTerm.toLowerCase())
