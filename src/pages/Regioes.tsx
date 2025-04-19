@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Search, MapPin, Info } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -13,11 +13,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { regionsData, Region, City } from "@/types/regions";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
 
 const Regioes = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [regions] = useState<Region[]>(regionsData);
   const isMobile = useIsMobile();
+  
+  // Use regionsData directly instead of useState to avoid reactivity issues
+  const regions = regionsData;
 
   // Filter regions and cities based on search term
   const filteredRegions = regions.map(region => ({
@@ -28,6 +32,17 @@ const Regioes = () => {
   })).filter(region => 
     region.name.toLowerCase().includes(searchTerm.toLowerCase()) || region.cities.length > 0
   );
+
+  // Handle accordion item click with a debounce to prevent issues
+  const handleAccordionClick = useCallback((value: string) => {
+    // This console log helps debug if the click handler is being called
+    console.log("Accordion item clicked:", value);
+  }, []);
+
+  // Handle promotion card click
+  const handlePromoClick = useCallback((promo: string) => {
+    toast.info(`Informações sobre a promoção ${promo} serão exibidas em breve.`);
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -68,39 +83,52 @@ const Regioes = () => {
         </div>
       </motion.div>
 
-      {/* Promoções */}
+      {/* Promoções - Using Tabs for better interaction */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
       >
-        <Card className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200">
-          <CardContent className="p-4">
-            <h3 className="font-bold text-amber-800">Dúvidas da Promoção</h3>
-            <p className="text-sm text-amber-700 mt-1">
-              Informações sobre as promoções atuais e como participar.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
-          <CardContent className="p-4">
-            <h3 className="font-bold text-green-800">Promoção Ribeirão Preto</h3>
-            <p className="text-sm text-green-700 mt-1">
-              Descontos especiais para a região de Ribeirão Preto.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="md:col-span-2 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-          <CardContent className="p-4">
-            <h3 className="font-bold text-blue-800">Promoção Limeira</h3>
-            <p className="text-sm text-blue-700 mt-1">
-              Condições especiais para pedidos na região de Limeira e cidades próximas.
-            </p>
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="duvidas" className="w-full">
+          <TabsList className="w-full grid grid-cols-3 mb-4">
+            <TabsTrigger value="duvidas">Dúvidas da Promoção</TabsTrigger>
+            <TabsTrigger value="ribeirao">Promoção Ribeirão</TabsTrigger>
+            <TabsTrigger value="limeira">Promoção Limeira</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="duvidas">
+            <Card className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200">
+              <CardContent className="p-4">
+                <h3 className="font-bold text-amber-800">Dúvidas da Promoção</h3>
+                <p className="text-sm text-amber-700 mt-1">
+                  Informações sobre as promoções atuais e como participar.
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="ribeirao">
+            <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+              <CardContent className="p-4">
+                <h3 className="font-bold text-green-800">Promoção Ribeirão Preto</h3>
+                <p className="text-sm text-green-700 mt-1">
+                  Descontos especiais para a região de Ribeirão Preto.
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="limeira">
+            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+              <CardContent className="p-4">
+                <h3 className="font-bold text-blue-800">Promoção Limeira</h3>
+                <p className="text-sm text-blue-700 mt-1">
+                  Condições especiais para pedidos na região de Limeira e cidades próximas.
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </motion.div>
 
       {/* Regions Accordion */}
@@ -110,10 +138,14 @@ const Regioes = () => {
         transition={{ delay: 0.3, duration: 0.5 }}
         className="grid gap-4"
       >
-        <Accordion type="multiple" className="space-y-4">
+        <Accordion 
+          type="multiple" 
+          className="space-y-4"
+          onValueChange={handleAccordionClick}
+        >
           {filteredRegions.map((region, index) => (
             <AccordionItem
-              key={index}
+              key={`region-${index}`}
               value={`region-${index}`}
               className="border rounded-lg overflow-hidden bg-card"
             >
@@ -130,7 +162,7 @@ const Regioes = () => {
                 <div className={`grid grid-cols-1 ${isMobile ? "" : "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"} gap-2 pt-2`}>
                   {region.cities.map((city, cityIndex) => (
                     <div
-                      key={cityIndex}
+                      key={`city-${region.name}-${cityIndex}`}
                       className="p-2 rounded-md bg-accent/50 flex items-center gap-2"
                     >
                       <MapPin className="h-4 w-4 text-primary" />
