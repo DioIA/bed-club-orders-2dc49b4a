@@ -1,14 +1,15 @@
+
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   LayoutDashboard, Calendar, ClipboardList, 
-  Package, MapPin, LifeBuoy, HelpCircle, X, UserCircle, LogOut, Notebook
+  Package, MapPin, LifeBuoy, HelpCircle, X, UserCircle, LogOut
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Logo from "./Logo";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AffiliateProfileForm } from "./AffiliateProfileForm";
 import { useAuth } from '@/context/AuthContext';
 import {
@@ -17,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { supabase } from "@/integrations/supabase/client";
 
 interface SidebarProps {
   onClose: () => void;
@@ -47,14 +49,37 @@ const navItems = [
 const Sidebar = ({ onClose }: SidebarProps) => {
   const [profileOpen, setProfileOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const [displayName, setDisplayName] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchDisplayName() {
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("username")
+          .eq("id", user.id)
+          .single();
+        if (profile && profile.username) {
+          setDisplayName(profile.username);
+        } else {
+          setDisplayName(null);
+        }
+      }
+    }
+    fetchDisplayName();
+
+    // Opcional: atualizar nome de exibição após editar perfil
+    // Poderia ser feita com um event bus para UX melhor em produção
+
+  }, [user, profileOpen]);
 
   const handleNavigation = (path: string) => {
     if (window.innerWidth < 768) {
       onClose();
     }
     navigate(path);
-    return false; // Prevent default behavior
+    return false;
   };
 
   return (
@@ -87,7 +112,9 @@ const Sidebar = ({ onClose }: SidebarProps) => {
                 </AvatarFallback>
               </Avatar>
               <span className="text-sm truncate">
-                {user?.email?.split('@')[0] || 'Usuário'}
+                {displayName 
+                  ? displayName 
+                  : (user?.email?.split('@')[0] || 'Usuário')}
               </span>
             </Button>
           </DropdownMenuTrigger>
@@ -161,3 +188,4 @@ const Sidebar = ({ onClose }: SidebarProps) => {
 };
 
 export default Sidebar;
+
