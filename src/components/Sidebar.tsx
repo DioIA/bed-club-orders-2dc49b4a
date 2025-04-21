@@ -1,4 +1,3 @@
-
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
@@ -41,7 +40,6 @@ const navItems = [
   { path: "/acompanhamento", label: "Acompanhamento", icon: ClipboardList },
   { path: "/produtos", label: "Produtos", icon: Package },
   { path: "/regioes", label: "Regiões de Entrega", icon: MapPin },
-  { path: "/notas", label: "Minhas Notas", icon: Notebook },
   { path: "/suporte", label: "Suporte", icon: LifeBuoy },
   { path: "/sac", label: "SAC / Perguntas", icon: HelpCircle },
 ];
@@ -51,7 +49,6 @@ const Sidebar = ({ onClose }: SidebarProps) => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
-  // Handles navigation while properly closing the sidebar on mobile
   const handleNavigation = (path: string) => {
     if (window.innerWidth < 768) {
       onClose();
@@ -131,7 +128,6 @@ const Sidebar = ({ onClose }: SidebarProps) => {
                     : 'hover:bg-white/10 text-white/90 hover:text-white'}
                 `}
                 onClick={() => {
-                  // Para dispositivos móveis, feche a sidebar após clicar
                   if (window.innerWidth < 768) {
                     onClose();
                   }

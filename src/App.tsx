@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -73,7 +72,6 @@ const AppRoutes = () => (
       <Route path="regioes" element={<Regioes />} />
       <Route path="suporte" element={<Suporte />} />
       <Route path="sac" element={<Sac />} />
-      <Route path="notas" element={<Notes />} />
     </Route>
     <Route path="*" element={<NotFound />} />
   </Routes>
