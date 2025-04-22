@@ -33,8 +33,12 @@ const Regioes = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
+        className="text-center"
       >
-        <h1 className="text-3xl font-bold mb-2">Regiões de Entrega</h1>
+        <h1 className="text-5xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] via-[#D946EF] to-[#0EA5E9]">
+          RFK
+        </h1>
+        <h2 className="text-3xl font-bold mb-2">Regiões de Entrega</h2>
         <p className="text-muted-foreground mb-6">
           Gerencie as regiões disponíveis para entrega.
         </p>
