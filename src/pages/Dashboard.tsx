@@ -1,10 +1,10 @@
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { BarChart, Calendar, DollarSign, Users } from "lucide-react";
-import { MakeWebhookHandler } from "@/components/MakeWebhookHandler";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -127,13 +127,6 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           </div>
-
-          {/* Add MakeWebhook Handler */}
-          <Card>
-            <CardContent className="pt-6">
-              <MakeWebhookHandler />
-            </CardContent>
-          </Card>
         </TabsContent>
         <TabsContent value="analytics" className="h-[400px] flex items-center justify-center bg-muted/20 rounded-md">
           <div className="text-center">
